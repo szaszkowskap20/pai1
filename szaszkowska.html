@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D</title>
+</head>
+
+<body>
+    <input type="text">
+    <input value="przywitaj" type="button">
+    <div></div>
+    <script>
+        let tekst = document.querySelector("div")
+        let przycisk = document.querySelectorAll("input")[1]
+        przycisk.addEventListener('click', function () {
+            tekst.innerHTML += "Cześć " + document.querySelector("input").value
+        });
+    </script>
+
+</body>
+
+</html>
