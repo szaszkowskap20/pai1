@@ -9,31 +9,75 @@
     <title>Historia</title>
 </head>
 <body>
-    <nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light bg-light d-flex justify-content-between">
         <div class="container-fluid">
-          <a class="navbar-brand" href="kalkulator.html">Kalkulator</a>
-          
+          <a class="navbar-brand" href="kalkulator.php">Kalkulator</a>
+          <form method="POST">
+			  <?php
+			  	if(isset(($_COOKIE['accedere']))){
+
+				  
+				
+					if($_COOKIE['accedere'] == true){
+						echo "<input type='submit' name='wylogowanie' class='btn btn-primary' value='Wyloguj'>";
+					}else{
+						echo "<button class='btn btn-primary' value='Zaloguj się' ><a href='logowanie.php'>Zaloguj się</a></button>";
+					}
+				
+			}else{
+				echo "<button class='btn btn-primary' value='Zaloguj się'><a href='logowanie.php' class='text-light'>Zaloguj się</a></button>";
+			}
+				
+			  ?>
+	
+              <?php
+				if(isset($_POST['wylogowanie'])){
+					setcookie('accedere', false);
+				}
+              
+				
+              ?>
+          </form>
         </div>
+       
       </nav>
 
-    <div class="container-lg alert alert-dark ">
     
-            <?php
-                ob_start();
-                session_start();
-                $sessssion = $_SESSION['count'];
-                for($i = 0; $i < $sessssion; $i++){
-                    $nazwa = "wynik".$i.".txt";
-                    
-                    echo "<a href='$nazwa' class='stretched-link text-danger d-flex justify-content-center'>$nazwa</a><br>";
-                     
-                    
-                    
-                    
-                }
-            ?>
 
-    </div>
+<?php
+    if(isset($_COOKIE['accedere'])){
+            if($_COOKIE['accedere'] == true){
+
+        
+                echo "<div class='container-lg alert alert-dark'>";
+    
+                
+                    ob_start();
+                    session_start();
+                    $sessssion = $_SESSION['count'];
+                    for($i = 0; $i <= $sessssion; $i++){
+                        $nazwa = "wynik".$i.".txt";
+                        
+                        echo "<a href='$nazwa' class='stretched-link text-danger d-flex justify-content-center'>$nazwa</a><br>";
+                         
+                        
+                        
+                        
+                    }
+                
+    
+        echo "</div>";
+            }else{
+                echo "<div class='alert alert-danger d-flex justify-content-center' style='margin: 10%'>
+                <button class='btn btn-danger' value='Zaloguj się'><a href='logowanie.php' class='text-light'>Zaloguj się</a></button>      
+            </div>";
+            }
+        }else{
+            echo "<div class='alert alert-danger d-flex justify-content-center' style='margin: 10%'>
+                <button class='btn btn-danger' value='Zaloguj się'><a href='logowanie.php' class='text-light'>Zaloguj się</a></button>      
+            </div>";
+        }
+        ?>
     <!-- <input type="button" onClick = "generujWykres()" value="Wygeneruj wykres">
      
     <canvas id="obrazek" width="750" height="750" style="border:1px solid #000000;">

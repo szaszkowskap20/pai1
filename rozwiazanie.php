@@ -7,7 +7,7 @@ session_start();
 function kwadratowa($a, $b, $c)
 {
     $delta = $b * $b - (4 * $a * $c);
-    echo $delta."<br>";
+    //echo $delta."<br>";
     if ($delta == 0) {
         $x = (-$b) / (2 * $a);
         $wynik = array($delta, $x);
@@ -265,7 +265,7 @@ function app(){
     echo $wy_c;
     $wynik = kwadratowa($a, $b, $c);
     $delta = $wynik[0];
-    $wynik_plik = "a = ".$a." b = ".$b." c = ".$c." delta = ".$delta;
+    $wynik_plik = "a = ".$a."\nb = ".$b."\nc = ".$c."\ndelta = ".$delta;
     fwrite($myFile, $wynik_plik);
     echo "delta = ".$delta."<br>";
     echo "</div>";
@@ -288,20 +288,20 @@ function app(){
         echo "<div>Postać kanoniczna: f(x) = ".kanoniczna($a, $b, $delta)."</div>";
         echo "<div>Postać iloczynowa: f(x) = ".iloczynowa($wynik, $a)."</div>";
         echo "</div>";
-        $wynik_wynik = "Funkcja ma dwa rozwiązania";
+        $wynik_wynik = "Funkcja ma dwa rozwiazania\n";
         fwrite($myFile, $wynik_wynik);
         $wynik_wynik = "x = ".$wynik[1];
         fwrite($myFile, $wynik_wynik);
-        $wynik_wynik = "x = ".$wynik[2];
+        $wynik_wynik = "\nx = ".$wynik[2];
         fwrite($myFile, $wynik_wynik);
-        $wynik_wynik = "Postać kanoniczna: f(x) = ".kanoniczna($a, $b, $delta);
+        $wynik_wynik = "\nPostać kanoniczna: f(x) = ".kanoniczna($a, $b, $delta);
         fwrite($myFile, $wynik_wynik);
-        $wynik_wynik = "Postać iloczynowa: f(x) = ".iloczynowa($wynik, $a);
+        $wynik_wynik = "\nPostać iloczynowa: f(x) = ".iloczynowa($wynik, $a);
         fwrite($myFile, $wynik_wynik);
     }else{
         //echo "delta = ".$delta."<br>";
-        echo "Brak miejsc zerowych!!<br>";
-        echo "Postać kanoniczna: f(x) = ".kanoniczna($a, $b, $delta)."<br>";
+        echo "\nBrak miejsc zerowych!!";
+        echo "\nPostać kanoniczna: f(x) = ".kanoniczna($a, $b, $delta)."<br>";
    
     }
     fclose($myFile);
@@ -359,26 +359,68 @@ function app(){
     </script> -->
 </head>
 <body>
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light bg-light d-flex justify-content-between">
         <div class="container-fluid">
-          <a class="navbar-brand" href="kalkulator.html">Kalkulator</a>
           <a class="navbar-brand" href="historia.php">Historia</a>
+          <form method="POST">
+			  <?php
+			  	if(isset(($_COOKIE['accedere']))){
+
+				  
+				
+					if($_COOKIE['accedere'] == true){
+						echo "<input type='submit' name='wylogowanie' class='btn btn-primary' value='Wyloguj'>";
+					}else{
+						echo "<button class='btn btn-primary' value='Zaloguj się' ><a href='logowanie.php'>Zaloguj się</a></button>";
+					}
+				
+			}else{
+				echo "<button class='btn btn-primary' value='Zaloguj się'><a href='logowanie.php' class='text-light'>Zaloguj się</a></button>";
+			}
+				
+			  ?>
+	
+              <?php
+				if(isset($_POST['wylogowanie'])){
+					setcookie('accedere', false);
+				}
+              
+				if(isset($_POST['logowanie'])){
+					header("Location: logowanie.php");
+				}
+              ?>
+          </form>
         </div>
+       
       </nav>
     <div style="font-size: 25px;">
         <?php
-            if(isset($_POST["przycisk"])){
-                if(empty($_POST["a"]) || empty($_POST["b"]) || empty($_POST["c"])){
-                    echo "<b><p font=\"red\"> Wypełnij wszystkie pola!!! <br><br></p>";
-                    echo "<a href=\"kalkulator.html\"> Powrót do formularza</a>";
-                }else {
-                    app();
-                    //wykres();
+        if(isset($_COOKIE['accedere'])){
+            if($_COOKIE['accedere'] == true){
+
+        
+                if(isset($_POST["przycisk"])){
+                    if(empty($_POST["a"]) || empty($_POST["b"]) || empty($_POST["c"])){
+                        echo "<b><p font=\"red\"> Wypełnij wszystkie pola!!! <br><br></p>";
+                        echo "<a href=\"kalkulator.html\"> Powrót do formularza</a>";
+                    }else {
+                        app();
+                        //wykres();
+                    }
+                } 
+                else {
+                    header("kalkulator.php");
                 }
-            } 
-            else {
-                header("kalkulator.html");
+            }else{
+                echo "<div class='alert alert-danger d-flex justify-content-center' style='margin: 10%'>
+                <button class='btn btn-danger' value='Zaloguj się'><a href='logowanie.php' class='text-light'>Zaloguj się</a></button>      
+            </div>";
             }
+        }else{
+            echo "<div class='alert alert-danger d-flex justify-content-center' style='margin: 10%'>
+                <button class='btn btn-danger' value='Zaloguj się'><a href='logowanie.php' class='text-light'>Zaloguj się</a></button>      
+            </div>";
+        }
         
 
         ?>
